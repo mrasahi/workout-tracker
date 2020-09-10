@@ -5,7 +5,6 @@ const { Workout } = require('../models')
 // GET all workouts
 router.get('/workouts', (req, res) => {
     Workout.find()
-    .populate('user')
         .then(workouts => res.json(workouts))
         .catch(err => console.log(err))
 })
@@ -13,17 +12,13 @@ router.get('/workouts', (req, res) => {
 // POST one workout
 router.post('/workouts', (req, res) => {
     Workout.create(req.body)
-        .then(workout => {
-            User.findByIdAndUpdate(workout.user, { $push: {workouts: workout._id } })
-                .then(() => res.json(workout))
-                .catch(err => console.log(err))
-        })
+        .then(workout => res.json(workout))
         .catch(err => console.log(err))
 })
 
 // PUT one workout
 router.put('/workouts/:id', (req, res) => {
-    Workout.findByIdAndUpdate(req.params.id, req.body)
+    Workout.findByIdAndUpdate(req.params.id, { exercises: req.body })
         .then(() => res.sendStatus(200))
         .catch(err => console.log(err))
 })
