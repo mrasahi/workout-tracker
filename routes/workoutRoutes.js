@@ -19,18 +19,24 @@ router.post('/workouts', (req, res) => {
 // PUT one workout
 router.put('/workouts/:id', (req, res) => {
     Workout.findByIdAndUpdate(req.params.id, { $push: { exercises: req.body }})
-        .then(workout => {
-            res.json(workout)
-        })
+        .then(workout => res.json(workout))
         .catch(err => console.log(err))
 })
 
-// DELETE one workout
-router.delete('/workouts/:id', (req, res) => {
-    Workout.findByIdAndDelete(req.params.id)
-        .then(() => res.sendStatus(200))
+// GET for range?
+router.get('/workouts/range', (req, res) => {
+    Workout.find()
+        .then(workouts => res.json(workouts))
         .catch(err => console.log(err))
 })
+
+
+// DELETE one workout
+// router.delete('/workouts/:id', (req, res) => {
+//     Workout.findByIdAndDelete(req.params.id)
+//         .then(workout => res.json(workout))
+//         .catch(err => console.log(err))
+// })
 
 
 module.exports = router
